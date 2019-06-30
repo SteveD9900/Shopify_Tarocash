@@ -1,0 +1,174 @@
+/* account addresses */
+.custom_nav{
+  padding-top: 30px;
+  background-color: #f9f9f9;
+}
+.custom_nav a{
+  color: #939393 !important;
+}
+.custom_nav .active a{
+  color: black !important;
+}
+.nav-tabs{
+  display: inline-block;
+  width: 80%;
+}
+
+.logout_btn{
+  width: 100px;
+  height: 40px;
+  line-height: 36px;
+  background-color: black;
+  color: white !important;
+  float: right;
+  text-align: center;
+  display: inline-block;
+}
+
+#customer_logout_link{
+  color: white !important;
+  text-decoration: none !important;
+  border-bottom: none;
+}
+
+.logout_btn:hover{
+  border: 1px black solid;
+  background-color: white;
+  #customer_logout_link{
+    color: black!important;
+  }
+  .glyphicon-chevron-right{
+    color: black!important;
+  }
+  transition-duration: 1s; /* delays for 1 second */
+  -webkit-transition-duration: 1s;
+}
+
+.address_header{
+  padding-left: 30px;
+  height: 100px;
+  margin: 0;
+}
+
+.page-width{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.address-edit-toggle{
+  background-color: white;
+  color: #939393;
+  text-decoration: none;
+  padding: 0 !important;
+}
+
+.address-edit-toggle:hover{
+  color: black !important;
+  background-color: white !important;
+  text-decoration: none;
+  transition-duration: 1s; /* delays for 1 second */
+  -webkit-transition-duration: 1s;
+}
+
+.address-edit-toggle:visited{
+  color: black !important;
+  background-color: white !important;
+  text-decoration: none;
+}
+
+.address_bill{
+  width: 35%;
+  display: inline-block;
+}
+
+.address_row{
+  width: 100vw;
+}
+
+.addition_addr{
+  width: 100vw;
+  padding: 0;
+}
+
+.addition_addr_left{
+  width: 49%;
+  float: left;
+}
+
+.addition_addr_right{
+  width: 50%;
+  display: inline-block;
+/*   float: right; */
+}
+
+.submit_btn{
+  color: white !important;
+  background-color: black !important;
+}
+
+.submit_btn:hover{
+  color: black !important;
+  background-color: white !important;
+  border: 1px black solid;
+  transition-duration: 1s; /* delays for 1 second */
+  -webkit-transition-duration: 1s;
+}
+
+.add_new_addr{
+/*   width: 45%; */
+  height: 30px;
+  line-height: 20px;
+  font-weight: 300;
+  background-color: black;
+  color: white;
+  width: 230px;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 400;
+  margin-left: 20%;
+  padding: 5px 10px 5px 10px
+/*   margin-right: 30%; */
+}
+
+.add_new_addr:hover{
+  color: black !important;
+  background-color: white !important;
+  text-decoration: none;
+  transition-duration: 1s; /* delays for 1 second */
+  -webkit-transition-duration: 1s;
+  border: 1px black solid;
+}
+
+.save_btn input{
+  width: 150px;
+  height: 40px;
+  line-height: 22px;
+  background-color: black;
+  color: white;
+/*   text-align: center; */
+}
+
+.save_btn input:hover{
+  border: 1px solid black;
+  background-color: white !important;
+  color: black !important;
+  transition-duration: 1s; /* delays for 1 second */
+  -webkit-transition-duration: 1s;
+}
+
+#account_view_btn{
+  background-color: black !important;
+}
+
+#account_view_btn:hover{
+  background-color: black !important;
+}
+
+@media (max-width: 1300px){
+  .addition_addr_left{
+    width: 35%;
+  }
+  .add_new_addr{
+    margin-left: 0;
+  }
+}

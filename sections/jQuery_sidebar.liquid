@@ -1,0 +1,165 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Sidebar Menu</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<!--   <link rel="stylesheet" href="./dist/sidebar-menu.css"> -->
+  {{ 'siderbar_menu.scss.css' | asset_url | stylesheet_tag }}
+  
+</head>
+<body>
+  <section>
+    
+<!--     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#aa" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="aa"> -->
+
+<!--     <div class="sidenav"> -->
+<!--       <ul> -->
+      <ul class="sidebar-menu" id="side_menu">
+      
+        
+<!--       <ul class="nav nav-pills nav-stacked sidebar-menu"> -->
+        <li><a href="/"><span>HOME</span> </a></li>
+        <li>
+          <a href="#">
+            <span>SHIRTS</span>
+  <!--           <i class="fa fa-angle-left pull-right"></i> -->
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/collections/all">All Shirts</a></li>
+            <li><a href="/collections/dress_shirt">Dress Shirts</a></li>
+            <li><a href="/products/dress">Long sleeve shirts</a></li>
+            <li><a href="/collections/frontpage">Short sleeve shirts</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>TOPS</span>
+  <!--           <i class="fa fa-angle-left pull-right"></i> -->
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/">All Tops</a></li>
+            <li><a href="/blogs/news">Polos</a></li>
+            <li><a href="#">T-Shirts</a></li>
+            <li><a href="#">Knitwear</a></li>
+			<li><a href="#">Long Sleeve T-Shirts</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>BOTTOMS</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/collections/bottom">All Bottoms</a></li>
+            <li><a href="/blogs/news">Shorts</a></li>
+            <li><a href="#">Jeans</a></li>
+            <li><a href="#">Chinos</a></li>
+            <li><a href="#">Dress Pants</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>JACKETS</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/collections/Jackets">All Jackets</a></li>
+            <li><a href="/blogs/news">Coats</a></li>
+            <li><a href="#">Blazers</a></li>
+            <li><a href="#">Casual Jackets</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>SUITS</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/">All Suitse</a></li>
+            <li><a href="/blogs/news">Suits</a></li>
+            <li><a href="#">Waistcoats</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>FOOTWEAR</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/">All Footewears</a></li>
+            <li><a href="/blogs/news">Dress</a></li>
+            <li><a href="#">Casual</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>ACCESSORIES</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/">All Accessories</a></li>
+            <li><a href="/blogs/news">Socks</a></li>
+            <li><a href="#">Wallets</a></li>
+            <li><a href="#">Ties & Bow Ties</a></li>
+            <li><a href="#">Pocket Squares</a></li>
+            <li><a href="#">Cuffinks & Tie pins</a></li>
+            <li><a href="#">Belts & Suspenders </a></li>
+          </ul>
+        </li>
+        <li><a href="/collections/gift_card">GIFT CARDS</a></li>
+        <li><a href="/">LOOKBOOK</a></li>
+        <li>
+          <a href="#" style="color:red">
+            <span >SALES</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/">All Sale</a></li>
+            <li><a href="/blogs/news">Shirts</a></li>
+            <li><a href="#">Tops</a></li>
+            <li><a href="#">Bottoms</a></li>
+            <li><a href="#">Jackets</a></li>
+            <li><a href="#">Suits</a></li>
+            <li><a href="#">Footwear</a></li>
+            <li><a href="#">Accessories</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <span>HELP</span>
+            <i class="fas fa-plus pull-right"></i>
+          </a>
+          <ul class="sidebar-submenu">
+            <li><a href="/pages/contact-us">Contact Us</a></li>
+            <li><a href="/blogs/news">FAQ</a></li>
+            <li><a href="/collections/gift_cards">Gift Cards</a></li>
+            <li><a href="#">Delivery Info</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#">Update My Details</a></li>
+            <li><a href="#">Track My Order</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </li>
+      </ul>
+<!--     </div> -->
+
+  </section>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<!--   <script src="./dist/sidebar-menu.js"></script> -->
+  <script src="{{ 'sidebar_menu.js' | asset_url }}"></script>
+  <script>
+    $.sidebarMenu($('.sidebar-menu'))
+  </script>
+</body>

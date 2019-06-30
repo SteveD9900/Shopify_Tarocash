@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="no-js" lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> 
+        
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' | script_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css' | stylesheet_tag }}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- endif -%}
+
+  {%- capture seo_title -%}
+    {%- if template == 'search' and search.performed == true -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title | strip }}</title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% include 'social-meta-tags' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+
+
+  <script>
+    var theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        regularPrice: {{ 'products.product.regular_price' | t | json }},
+        sale: {{ 'products.product.on_sale' | t | json }},
+        showMore: {{ 'general.filters.show_more' | t | json }},
+        showLess: {{ 'general.filters.show_less' | t | json }},
+        addressError: {{ 'sections.map.address_error' | t | json }},
+        addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+        authError: {{ 'sections.map.auth_error_html' | t | json }},
+        newWindow: {{ 'general.accessibility.link_messages.new_window' | t | json }},
+        external: {{ 'general.accessibility.link_messages.external' | t | json }},
+        newWindowExternal: {{ 'general.accessibility.link_messages.new_window_and_external' | t | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }}
+    }
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  </script>
+
+
+  {%- if template.directory == 'customers' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+  {{ content_for_header }}
+{% include 'alireviews_core' %} 
+ </head>
+
+<body class="template-{{ template | split: '.' | first }}">
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  <div id="SearchDrawer" class="search-bar drawer drawer--top" role="dialog" aria-modal="true" aria-label="{{ 'general.search.placeholder' | t }}">
+    <div class="search-bar__table">
+      <div class="search-bar__table-cell search-bar__form-wrapper">
+        <form class="search search-bar__form" action="/search" method="get" role="search">
+          <input class="search__input search-bar__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+          <button class="search-bar__submit search__submit btn--link" type="submit">
+            {% include 'icon-search' %}
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+        </form>
+      </div>
+      <div class="search-bar__table-cell text-right">
+        <button type="button" class="btn--link search-bar__close js-drawer-close">
+          {% include 'icon-close' %}
+          <span class="icon__fallback-text">{{ 'general.search.close' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="row" id="section_top">
+      <div class="col-xs-12 offset-xs-5 col-md-12 offset-md-3 col-lg-12 offset-lg-1 vcenter">
+        <div id="section_top_ul">
+          <ul class="list-inline ">
+            <li class="list-inline-item"><a class="navbar-brand" href="#">
+              <span class="glyphicon glyphicon-retweet"></span>
+              <span class="text-center" >SHOP NOW.PAY LATER</span>
+              </a></li>
+            <li class="list-inline-item"><a class="navbar-brand" href="#">
+              <span class="glyphicon glyphicon-shopping-cart"></span>
+              <span class="text-center" >FREE SHIPPING</span>
+              </a></li>
+            <li class="list-inline-item"> <a class="navbar-brand" href="#">
+              <span class="glyphicon glyphicon-share"></span>
+              <span class="text-center" >EASY RETURNS</span>
+              </a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side_menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="aa">
+        <div id="original_bar">
+          <ul class="nav navbar-nav">
+            <li class="dropdown search_login">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="https://cdn.tarocash.com.au/static/version1557417758/frontend/Netstarter/tarocash/en_AU/images/flags/AUD.png" alt="AUD" title="AUD">
+                 &nbsp;$AUD <span class="glyphicon glyphicon-chevron-down"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><img src="https://cdn.tarocash.com.au/static/version1557417758/frontend/Netstarter/tarocash/en_AU/images/flags/NZD.png" alt="NZD" title="NZD">
+                  &nbsp;$NZD</a></li>
+                <li class="country-global switcher-option"><a href="#">
+                  <img src="https://cdn.tarocash.com.au/static/version1557417758/frontend/Netstarter/tarocash/en_AU/images/flags/global.png" alt="NZD" title="NZD">
+                  &nbsp;Global</a></li>
+              </ul>
+            </li>
+            <li class="search_login"><a href="https://www.tarocash.com.au/au/stores"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp; Find a store</a></li>
+
+
+          </ul>
+          <ul class="nav navbar-nav navbar-center">
+            <li id="logo_letters"><span class="text-center" >TAROCASH</span></li> 
+          </ul>
+
+  
+          <ul class="nav navbar-nav navbar-right">
+
+            <li class="dropdown search_login" id="show_search">
+              <a href="#"role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-search"></span>&nbsp; Search</a>
+            </li>
+            <li class="search_login">
+              {% if shop.customer_accounts_enabled %}
+                {% if customer  %}
+                  <a href="/account"><span class="glyphicon glyphicon-user"></span>&nbsp; {{ customer.first_name }}</a>
+                {% else %}
+                  <a href="/account/login">
+                  <span class="glyphicon glyphicon-user"></span>&nbsp; Login</a>
+                {% endif %}
+            {% endif %}
+<!--               <a href="/account/login">
+                <span class="glyphicon glyphicon-user"></span>&nbsp; Login</a> -->
+            </li>
+            <li class="bar_icon">&nbsp;&nbsp;<span class="glyphicon glyphicon-heart"></span></li>
+            <li class="bar_icon div_area" id="show_mini_cart"><span class="glyphicon glyphicon-briefcase"></span> {{cart.item_count}}&nbsp;&nbsp; </li>
+            
+          </ul>
+        </div>
+      </div>
+      
+<!--      Search Widget  -->
+
+      <div class="" role="alert" id="search_section">
+        <form class="search search-bar__form" action="/search" method="get" role="search">
+          <div class="search_content">
+            <div class="form-group row has-feedback has-search">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              <input type="search search__input search-bar__input" class="form-control" placeholder="Search Tarocash" name="q" id="searchinput" value="{{ search.terms | escape }}" aria-label="{{ 'general.search.placeholder' | t }}">
+              <span id="searchclear" class="">&times</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
+  <div id="mini_cart" class="div_area">
+    <button id="close_mini_cart">&times</button>
+    <br>
+    <div class="panel-body">
+   		<ul class="list-group">
+          {% for item in cart.items %}
+            <li class="list-group-item">
+              <div>
+                <img class="cart__image" src="{{ item | img_url: '81x115', scale: 2 }}" alt="{{ item.title | escape }}" data-item-url="{{ item.url }}">
+<!--                 <div class="list-view-item__title"> -->
+                <div class="mini_item_info">
+                  <a href="{{ item.url }}">
+                    {{ item.product.title }}
+                    {% if item.quantity > 1 %}
+                    <span class="medium-up--hide"><span class="visually-hidden">{{ 'cart.label.quantity' | t }}</span>(x{{ item.quantity }})</span>
+                    {% endif %}
+                  </a>
+                  <br>
+<!--                 </div> -->
+                	{% unless item.variant.title contains 'Default' %}
+<!--                       <div class="cart__meta-text"> -->
+                        {% for option in item.product.options %}
+                        {{ option }}: {{ item.variant.options[forloop.index0] }}
+                        {% endfor %}
+<!--                       </div> -->
+                    {% endunless %}
+                	<br>
+                  <span>Qty: {{item.quantity}}</span>
+                  
+<!--                   <br> -->
+
+                  <span class="small--hide trash_icon">
+                    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn btn--small btn--tertiary cart__remove" aria-label="{{ 'cart.general.remove' | t }} {{ item.product.title }}">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                  </span>
+                </div>
+                
+              </div>
+              <hr/>
+            </li>
+          {% endfor %}
+      	</ul>
+      	
+      <div id="sum_highlight">
+        <span><b>{{cart.item_count}} ITEMS</b> / {{ cart.total_price | money }}</span>
+      </div>
+      
+      <div id="view_cart_btn">
+        <div class="actions">
+          <div class="primary">
+            <a class="action viewcart" data-bind="attr: {href: shoppingCartUrl}" href="/cart">
+              <span>View Bag / Checkout </span><span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+
+   	<div id="wrapper">
+      <div id="sidebar-wrapper">
+      	{% section "jQuery_sidebar" %}
+      </div>
+      
+    <div id="page-content-wrapper">
+      <div class="page-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <main class="main-content js-focus-hidden" id="MainContent" role="main" tabindex="-1">
+                  {{ content_for_layout }}
+                </main>
+    		</div>
+          </div>
+        </div>
+    
+       </div>
+     
+
+
+        {% section 'footer' %}
+
+        <div id="slideshow-info" class="visually-hidden" aria-hidden="true">
+          {{- 'sections.slideshow.navigation_instructions' | t -}}
+        </div>
+
+      </div>
+      
+    </div>
+
+  <ul hidden>
+    <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
+    <li id="a11y-selection-message">{{ 'general.accessibility.selection_help' | t }}</li>
+  </ul>
+  
+    <div id="feedback_icon_stick">
+      <span>feedback</span>
+    </div>
+  
+<!--   filter function -->
+  <script>
+    /* Product Tag Filters - Good for any number of filters on any type of collection pages */
+    var collFilters = jQuery('.coll-filter');
+    collFilters.change(function() {
+      var newTags = [];
+      collFilters.each(function() {
+        if (jQuery(this).val()) {
+          newTags.push(jQuery(this).val());
+        }
+      });
+      if (newTags.length) {
+        var query = newTags.join('+');
+        window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('/' + 'tag', '/' + query);
+      }
+      else {
+        {% if collection.handle %}
+        window.location.href = '/collections/{{ collection.handle }}';
+        {% elsif collection.products.first.type == collection.title %}
+        window.location.href = '{{ collection.title | url_for_type }}';
+        {% elsif collection.products.first.vendor == collection.title %}
+        window.location.href = '{{ collection.title | url_for_vendor }}';
+        {% endif %}
+      }
+    });
+  </script>
+<!--   filter for searching page -->
+<!--   <script>
+    /* Product Tag Filters - Good for any number of filters on any type of collection pages */
+    var collFilters = jQuery('.search-filter');
+    collFilters.change(function() {
+      var newTags = [];
+      collFilters.each(function() {
+        if (jQuery(this).val()) {
+          newTags.push(jQuery(this).val());
+        }
+      });
+//       if (newTags.length) {
+//         var query = newTags.join('+');
+//         window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('/' + 'tag', '/' + query);
+//       }
+//       else {
+// //          /search?q=snowboard&type=article,page
+//         {% if search.handle %}
+//         window.location.href = '/search?q='+jQuery(this).val();
+// //         window.location.href = '/search/{{ search.handle }}';
+//         {% elsif search.products.first.type == search.title %}
+//         window.location.href = '{{ search.title | url_for_type }}';
+//         {% elsif search.products.first.vendor == search.title %}
+//         window.location.href = '{{ search.title | url_for_vendor }}';
+//         {% endif %}
+//       }
+    });
+  </script> -->
+</body>
+</html>

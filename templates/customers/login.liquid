@@ -1,0 +1,285 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' | script_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
+  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css' | stylesheet_tag }}
+</head>
+<header><script src="{{ 'login_register.js' | asset_url }}" async="async"></script> </header>
+<div class="page-width">
+  <div class="grid">
+
+    <div class="grid__item medium-up--one-half medium-up--push-one-quarter" id="login_section">
+      <div class="form-message form-message--success hide" id="ResetSuccess" tabindex="-1">
+        {{ 'customer.recover_password.success' | t }}
+      </div>
+      
+      <div id="login_guide" class="search_header_btn_login">
+        <div id="return_login" class="click_activated">
+          RETURNING CUSTOMERS
+        </div>
+        <div id="create_customer">
+          NEW CUSTOMERS
+        </div>
+      </div>
+      
+	<div id="login_template">
+      <div id="CustomerLoginForm" class="form-vertical">
+
+        <h1 id="LoginHeading" class="text-center">{{ 'login' | upcase }}</h1>
+
+        {% form 'customer_login', novalidate: 'novalidate' %}
+
+          {%- if form.errors -%}
+            <div class="form-message form-message--error">
+              <h2 class="h3 form-message__title " tabindex="-1" data-form-status>{{ 'contact.form.error_heading' | t }}</h2>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <label for="CustomerEmail">Email address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            {%- if form.errors contains 'form' -%}
+              class="input--error"
+              aria-invalid="true"
+            {%- endif -%}
+            >
+
+          {% if form.password_needed %}
+        	<div class="form-group psw_group">
+              <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+             
+                <input
+                  type="password"
+                  value=""
+                  name="customer[password]"
+                  id="CustomerPassword"
+                 
+                  {%- if form.errors contains 'form' -%}
+                    class="input--error"
+                    aria-invalid="true"
+                  {%- endif -%}
+                >
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"> show</span>
+        	</div>
+          {% endif %}
+
+          <div class="text-left">
+            
+
+            <input type="submit" class="btn login_btn" value="{{ 'LOGIN >'|upcase }}" id="login_submit">
+            {% if form.password_needed %}
+            <div id="find_pwd">
+            	<a href="#recover" id="RecoverPassword"><span>{{ 'customer.login.forgot_password' | t }}</span></a>
+            </div>
+            {% endif %}
+
+<!--             <p>
+              {{ 'layout.customer.create_account' | t | customer_register_link }}
+            </p> -->
+          </div>
+
+        {% endform %}
+      </div>
+
+      <div id="RecoverPasswordForm" class="hide">
+
+        <div class="text-center">
+          <h2 id="RecoverHeading">{{ 'customer.recover_password.title' | t }}</h2>
+          <p>{{ 'customer.recover_password.subtext' | t }}</p>
+        </div>
+
+        <div class="form-vertical">
+          {% form 'recover_customer_password' %}
+
+            {% comment %}
+              Add a hidden span to indicate the form was submitted succesfully.
+            {% endcomment %}
+            {% if form.posted_successfully? %}
+              <span class="hide reset-password-success"></span>
+            {% endif %}
+
+            <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+            <input
+              type="email"
+              value=""
+              name="email"
+              id="RecoverEmail"
+              class="input-full{% if form.errors %} input--error{% endif %}"
+              autocorrect="off"
+              autocapitalize="off"
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="RecoverEmail-email-error"
+              {%- endif -%}
+              >
+            {%- if form.errors -%}
+              <span id="RecoverEmail-email-error" class="input-error-message">
+                {% include 'icon-error' %} {{ form.errors.messages['form'] }}
+              </span>
+            {%- endif -%}
+
+            <div class="text-left">
+              <p>
+                <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
+              </p>
+
+              <a href="#LoginHeading" id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</a>
+            </div>
+          {% endform %}
+        </div>
+
+      </div>
+
+      {% comment %}
+        If accounts are set as optional, the following will be shown as an option
+        during checkout, not on the default /login page.
+      {% endcomment %}
+      {% if shop.checkout.guest_login %}
+        <div class="text-center">
+          <hr class="hr--invisible">
+          <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+          {% form 'guest_login' %}
+            <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+          {% endform %}
+        </div>
+      {% endif %}
+    </div>
+      
+    
+    
+    
+      
+<!--     register-template   -->
+    <div class="form-vertical" id="register_template">
+
+        <h1 class="text-left">{{ 'sign up'|upcase }}</h1>
+
+        {%- assign formId = 'RegisterForm' -%}
+        {% form 'create_customer', id: formId, novalidate: 'novalidate' %}
+          {% include 'form-status', form_id: formId %}
+
+          <label for="{{ formId }}-FirstName">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="{{ formId }}-FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+
+          <label for="{{ formId }}-LastName">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="{{ formId }}-LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+
+   		  <label for="CustomerEmail">Email address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="{{ formId }}-email"
+            class="{% if form.errors contains 'email' %} input--error{% endif %}"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            {%- if form.errors contains 'email' -%}
+              class="input--error"
+              aria-invalid="true"
+              aria-describedby="{{ formId }}-email-error"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'email' -%}
+            <span id="{{ formId }}-email-error" class="input-error-message">{% include 'icon-error' %} {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+          {%- endif -%}
+		 <div class="form-group psw_group">
+           <label for="{{ formId }}-password">{{ 'customer.register.password' | t }}</label>
+           <input
+                  type="password"
+                  name="customer[password]"
+                  id="{{ formId }}-password"
+                  class="{% if form.errors contains 'password' %} input--error{% endif %}  register_pwd"
+                  aria-required="true"
+                  {%- if form.errors contains 'password' -%}
+                  class="input--error"
+                  aria-invalid="true"
+                  aria-describedby="{{ formId }}-password-error"
+                  {%- endif -%}
+                  >
+           <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"> show</span>
+           
+           <div id="pwd_validation">
+              Password Strength: No Password
+          </div>
+           
+           <div id="pwd_alarm">
+             Minimum length of this field must be equal or greater than 8 symbols. Leading and trailing spaces will be ignored.
+           </div>
+           
+           
+           {%- if form.errors contains 'password' -%}
+           <span id="{{ formId}}-password-error" class="input-error-message">{% include 'icon-error' %} {{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+           {%- endif -%}
+         </div>
+      
+      	<div id="comfirm_password">
+      
+      		<label for="{{ formId }}-password">{{ 'Confirm Password'}}</label>
+           		<input
+                  type="password"
+                  name="customer[password]"
+                  id="{{ formId }}-password"
+                  class="{% if form.errors contains 'password' %} input--error{% endif %}  confirm_pwd"
+                  aria-required="true"
+                  {%- if form.errors contains 'password' -%}
+                  class="input--error"
+                  aria-invalid="true"
+                  aria-describedby="{{ formId }}-password-error"
+                  {%- endif -%}
+                  >
+      </div>
+        
+          <p class="fixed_width_register">Registering signs you up to receive our latest news and offers, view our
+            <a href="https://www.tarocash.com.au/au/privacy-policy/" id="policy_link">Privacy Policy here.</a>
+          </p>
+
+          <p class="text-left" id="create_account_p">
+            <input type="submit" value="{{ 'create account >' | upcase }}" class="btn" id="register_submit">
+          </p>
+        
+        <h3 class="text-center fixed_width_register" id="OR_head"> OR </h3>
+        
+        <div id="register_fb">
+          <i class="fa fa-facebook-official"></i> <span> LOGIN WITH FACEBOOK ></span>
+        </div>
+
+        {% endform %}
+      </div>
+    </div>
+    
+    <div class="" id="register_part2">
+      <div class="" aria-labelledby="block-new-customer-heading"><h3>CREATE AN ACCOUNT TO:</h3>
+        <ul class="register_text_list">
+          <li><span class="glyphicon glyphicon-ok"></span> Check out faster next time</li>
+          <li><span class="glyphicon glyphicon-ok"></span> Receive member exclusive offers</li>
+          <li><span class="glyphicon glyphicon-ok"></span> Track your orders online</li>
+        </ul> 
+        <div>
+          <strong id="login-lower">Already a member? 
+            <a class="" id="login_link">
+            <span>Login</span></a>
+          </strong>
+       </div>
+      </div>
+      
+    </div>
+    
+    <div class="grid__item medium-up--one-half medium-up--push-one-quarter" id="login_section_2">
+      <div id="right_side_login">
+        <div>SIGN UP NOW <span class="glyphicon glyphicon-chevron-right"></span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
